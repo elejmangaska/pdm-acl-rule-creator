@@ -1,0 +1,59 @@
+apply plugin: 'groovy'
+
+repositories {
+    mavenCentral()
+}
+
+compileJava {
+    options.compilerArgs << "-implicit:none"
+}
+
+dependencies {
+
+    compile "org.codehaus.groovy:groovy-all:$GROOVY_VERSION"
+    compile "org.slf4j:slf4j-api:$slf4jVersion"
+   // compile "org.apache.commons:commons-csv:1.1"
+    compile 'org.apache.poi:poi:3.15'
+    compile 'org.apache.poi:poi-ooxml:3.15'
+    compile 'org.apache.poi:poi-ooxml-schemas:3.15'
+    compile 'org.apache.poi:ooxml-schemas:1.3'
+    compile "com.google.code.gson:gson:$gsonVersion"
+    compile project(":java:acl")
+    compile project(path: ':as-storage:as-storage-gen:as-storage-java-api')
+
+    runtime "log4j:log4j:$log4jVersion"
+    runtime "org.slf4j:slf4j-log4j12:$slf4jVersion"
+
+    testCompile "junit:junit:$junitVersion"
+    testCompile 'org.jukito:jukito:1.4'
+    testCompile "org.mockito:mockito-core:$mockitoVersion"
+
+}
+
+apply plugin: 'jacoco'
+jacoco {
+    toolVersion = "0.7.5+"
+    reportsDir = file("${projectDir.parent}/codeCoverageReports")
+}
+
+project.afterEvaluate {
+    configurations {
+        actorManagement
+    }
+
+    dependencies {
+        actorManagement project(path: ':common-components:common-actors', configuration: 'mgmt')
+    }
+}
+
+jacocoTestReport {
+    reports {
+        html.enabled = true
+        xml.enabled false
+        csv.enabled false
+        html.destination new File("$rootProject.projectDir").absolutePath + "/jacoco/${project.name}"
+    }
+    onlyIf = {
+        true
+    }
+}
