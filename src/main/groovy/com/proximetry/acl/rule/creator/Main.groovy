@@ -1,3 +1,5 @@
+package com.proximetry.acl.rule.creator
+
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.proximetry.acl.objects.Attribute

@@ -1,4 +1,7 @@
 apply plugin: 'groovy'
+apply plugin: 'application'
+
+mainClassName = "com.proximetry.acl.rule.creator.Main"
 
 repositories {
     mavenCentral()
@@ -28,6 +31,9 @@ dependencies {
     testCompile 'org.jukito:jukito:1.4'
     testCompile "org.mockito:mockito-core:$mockitoVersion"
 
+}
+run {
+    args += 'src/main/resources/authorization.xlsx'
 }
 
 apply plugin: 'jacoco'
